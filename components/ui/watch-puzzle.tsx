@@ -77,9 +77,9 @@ export function WatchPuzzle({
               <span className="italic text-zinc-400">Masterpiece</span>
             </h2>
           </div>
-          <div className="w-full max-w-md flex flex-col animate-pulse" style={{ gap: "2px" }}>
+          <div className="w-full max-w-md flex flex-col animate-pulse aspect-[4/5] w-full" style={{ gap: "2px" }}>
             {Array.from({ length: SLICES }).map((_, i) => (
-              <div key={i} className="w-full h-14 bg-zinc-900 rounded-sm" />
+              <div key={i} className="w-full bg-zinc-900 rounded-sm flex-1" />
             ))}
           </div>
         </div>
@@ -113,7 +113,7 @@ export function WatchPuzzle({
             axis="y"
             values={order}
             onReorder={handleReorder}
-            className="flex flex-col transition-[gap] duration-700 ease-in-out"
+            className="flex flex-col transition-[gap] duration-700 ease-in-out w-full aspect-[4/5]"
             style={{ gap: solved ? "0px" : "2px" }}
           >
             {order.map((sliceIndex) => {
@@ -125,8 +125,7 @@ export function WatchPuzzle({
                 <Reorder.Item
                   key={sliceIndex}
                   value={sliceIndex}
-                  className="relative w-full select-none cursor-grab active:cursor-grabbing group overflow-hidden"
-                  style={{ height: "60px" }}
+                  className="relative w-full select-none cursor-grab active:cursor-grabbing group overflow-hidden flex-1"
                   whileDrag={{
                     scale: 1.025,
                     zIndex: 50,
