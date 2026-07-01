@@ -201,7 +201,8 @@ export default function Home() {
               Time <span className="text-zinc-500 italic lowercase font-light">reimagined</span>.
             </h1>
             <p className="mt-8 text-zinc-400 max-w-xl mx-auto text-lg md:text-xl font-light tracking-wide mix-blend-difference">
-              It's your time. Coming soon.
+              It's your time.<br />
+              <span className="text-2xl md:text-3xl font-medium text-white block mt-2">Coming soon.</span>
             </p>
             
             <div className="mt-12 w-full max-w-md mix-blend-difference">
@@ -275,6 +276,7 @@ export default function Home() {
         <div className="w-full bg-black py-20 flex flex-col items-center justify-center gap-8 border-t border-white/5">
           <p className="text-zinc-600 text-xs tracking-[0.4em] uppercase font-medium">Back to top</p>
           <button
+            suppressHydrationWarning
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             aria-label="Scroll back to top"
             className="group relative flex items-center justify-center w-16 h-16 rounded-full border border-zinc-800 bg-zinc-950 text-zinc-400 transition-all duration-500 hover:scale-110 hover:border-zinc-400 hover:text-white hover:shadow-[0_0_40px_rgba(255,255,255,0.12)]"
@@ -315,17 +317,14 @@ export default function Home() {
       {/* <CinematicFooter /> */}
 
       {/* ELEVATED FOOTER */}
-      <footer className="w-full py-24 bg-black border-t border-white/5 relative overflow-hidden">
+      <footer className="w-full pt-16 pb-4 bg-black border-t border-white/5 relative overflow-hidden z-20">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-zinc-500/50 to-transparent"></div>
         <div className="max-w-7xl mx-auto px-6 flex flex-col items-center justify-center gap-6 relative z-10">
           <img
-            src="/icon.png"
+            src="/fylex_logo_name.png"
             alt="Fylex Logo"
-            className="w-10 h-10 object-contain opacity-50 hover:opacity-100 transition-opacity duration-500"
+            className="w-48 md:w-64 object-contain opacity-80 hover:opacity-100 transition-opacity duration-500"
           />
-          <p className="text-white font-serif text-3xl md:text-5xl tracking-[0.3em] uppercase bg-clip-text text-transparent bg-gradient-to-b from-white to-zinc-500">
-            Fylex
-          </p>
           <p className="text-zinc-600 tracking-[0.2em] uppercase text-[10px] mt-4">
             © {new Date().getFullYear()} The Fylex. All rights reserved.
           </p>

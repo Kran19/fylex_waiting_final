@@ -51,7 +51,7 @@ export function WaitlistForm() {
       setPhone("");
       Swal.fire({
         title: 'Success!',
-        text: 'User registration successful!',
+        text: 'Your spot is secured. We will notify you the moment our doors open.',
         icon: 'success',
         background: '#18181b', // dark background matching site
         color: '#ffffff', // white text

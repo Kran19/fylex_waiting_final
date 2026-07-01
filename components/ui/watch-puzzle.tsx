@@ -186,9 +186,7 @@ export function WatchPuzzle({
 
         {/* Controls */}
         <div className="flex items-center gap-5 mt-7">
-          <span className="text-zinc-600 text-xs tracking-[0.3em] uppercase tabular-nums min-w-[80px] text-center">
-            {moves} {moves === 1 ? "move" : "moves"}
-          </span>
+
           <button
             onClick={handleShuffle}
             className="flex items-center gap-2 text-xs tracking-[0.2em] uppercase text-zinc-500 hover:text-white border border-zinc-800 hover:border-zinc-500 px-5 py-2 rounded-full transition-all duration-300"
@@ -224,9 +222,7 @@ export function WatchPuzzle({
                 You've unveiled the{" "}
                 <span className="italic text-zinc-400">Fylex.</span>
               </p>
-              <p className="text-zinc-500 text-sm">
-                Completed in {moves} {moves === 1 ? "move" : "moves"}.
-              </p>
+
               <button
                 onClick={handleShuffle}
                 className="flex items-center gap-2 mt-2 px-8 py-3 bg-white text-black text-sm font-semibold rounded-full hover:bg-zinc-200 transition-colors"
