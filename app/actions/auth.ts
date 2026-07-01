@@ -27,7 +27,8 @@ export async function login(formData: FormData) {
     .setExpirationTime('24h')
     .sign(secret);
 
-  cookies().set('admin_token', token, {
+  const cookieStore = await cookies();
+  cookieStore.set('admin_token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -38,6 +39,7 @@ export async function login(formData: FormData) {
 }
 
 export async function logout() {
-  cookies().delete('admin_token');
+  const cookieStore = await cookies();
+  cookieStore.delete('admin_token');
   redirect('/admin/login');
 }
