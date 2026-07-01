@@ -45,6 +45,10 @@ jobs:
             echo "📦 Installing waitlist dependencies..."
             npm install --frozen-lockfile || npm install
 
+            echo "🗄️  Generating Prisma Client & Running Migrations..."
+            npx prisma generate
+            npx prisma migrate deploy
+
             echo "🔨 Building waitlist..."
             npm run build
 

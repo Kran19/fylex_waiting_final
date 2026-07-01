@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import pool from '@/lib/db';
+import prisma from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
@@ -12,21 +12,17 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if the table exists, if not, create it.
-    // In production, you would handle migrations separately.
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS waitlist (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        phone VARCHAR(20) NOT NULL UNIQUE,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    // Insert the phone number, or ignore if it already exists
-    await pool.query(
-      'INSERT IGNORE INTO waitlist (phone) VALUES (?)',
-      [phone]
-    );
+    try {
+      await prisma.waitlist.create({
+        data: { phone },
+      });
+    } catch (e: any) {
+      // P2002 is Prisma's unique constraint violation error code
+      // We can ignore it if the phone number is already registered
+      if (e.code !== 'P2002') {
+        throw e;
+      }
+    }
 
     return NextResponse.json(
       { message: 'Registration successful' },
