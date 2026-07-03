@@ -40,6 +40,7 @@ export function WatchPuzzle({
   const [isMounted, setIsMounted] = useState(false);
   const [moves, setMoves] = useState(0);
   const [solved, setSolved] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   // Shuffle only on client after mount (prevents hydration mismatch)
   useEffect(() => {
@@ -49,8 +50,8 @@ export function WatchPuzzle({
 
   useEffect(() => {
     if (!isMounted) return;
-    if (isSolved(order)) setSolved(true);
-  }, [order, isMounted]);
+    if (!isDragging && isSolved(order)) setSolved(true);
+  }, [order, isMounted, isDragging]);
 
   const handleReorder = (newOrder: number[]) => {
     // Only count a move when something actually changed position
@@ -125,7 +126,12 @@ export function WatchPuzzle({
                 <Reorder.Item
                   key={sliceIndex}
                   value={sliceIndex}
-                  className="relative w-full select-none cursor-grab active:cursor-grabbing group overflow-hidden flex-1"
+                  dragListener={!solved}
+                  onDragStart={() => setIsDragging(true)}
+                  onDragEnd={() => setIsDragging(false)}
+                  className={`relative w-full select-none group overflow-hidden flex-1 ${
+                    solved ? "cursor-default" : "cursor-grab active:cursor-grabbing"
+                  }`}
                   whileDrag={{
                     scale: 1.025,
                     zIndex: 50,
@@ -172,11 +178,12 @@ export function WatchPuzzle({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1, delay: 0.2, ease: "easeInOut" }}
-                className="absolute inset-0 pointer-events-none z-20"
+                className="absolute inset-0 pointer-events-none z-20 bg-zinc-950"
                 style={{
                   backgroundImage: `url('${imageUrl}')`,
                   backgroundSize: "100% 100%",
                   backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
                 }}
               />
             )}
