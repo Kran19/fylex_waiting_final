@@ -65,7 +65,7 @@ export default function DefaultDemo() {
 					Scroll Down for Zoom Parallax
 				</h1>
 			</div>
-			<ZoomParallax images={images} />
+			<ZoomParallax items={images.map((img, i) => <img key={i} src={img.src} alt={img.alt} className="w-full h-full object-cover" />)} />
 			<div className="h-[50vh]"/>
 		</main>
 	);
