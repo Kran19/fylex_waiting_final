@@ -3,17 +3,14 @@
 import { useScroll, useTransform, motion } from 'framer-motion';
 import { useRef } from 'react';
 
-interface Image {
-	src: string;
-	alt?: string;
-}
+import React, { ReactNode } from 'react';
 
 interface ZoomParallaxProps {
-	/** Array of images to be displayed in the parallax effect max 7 images */
-	images: Image[];
+	/** Array of React elements to be displayed in the parallax effect, max 7 items. The first item is the center element. */
+	items: ReactNode[];
 }
 
-export function ZoomParallax({ images }: ZoomParallaxProps) {
+export function ZoomParallax({ items }: ZoomParallaxProps) {
 	const container = useRef(null);
 	const { scrollYProgress } = useScroll({
 		target: container,
@@ -32,7 +29,7 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
 	return (
 		<div ref={container} className="relative h-[300vh]">
 			<div className="sticky top-0 h-screen overflow-hidden">
-				{images.map(({ src, alt }, index) => {
+				{items.map((item, index) => {
 					const scale = scales[index % scales.length];
 
 					return (
@@ -48,12 +45,8 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
 								${index === 6 ? '[&>div]:!top-[28vh] [&>div]:!left-[18vw] [&>div]:!h-[18vh] [&>div]:!w-[20vw]' : ''} 
 							`}
 						>
-							<div className="relative h-[28vh] w-[22vw]">
-								<img
-									src={src || '/placeholder.svg'}
-									alt={alt || `Parallax image ${index + 1}`}
-									className="h-full w-full object-cover"
-								/>
+							<div className="relative h-[28vh] w-[22vw] flex items-center justify-center">
+								{item}
 							</div>
 						</motion.div>
 					);

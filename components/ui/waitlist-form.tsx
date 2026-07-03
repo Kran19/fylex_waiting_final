@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Check, AlertCircle } from "lucide-react";
+import { Check, AlertCircle } from "lucide-react";
 import Swal from 'sweetalert2';
 
 // Validates a 10-digit Indian mobile number (or any 10-digit number)
@@ -74,6 +74,15 @@ export function WaitlistForm() {
             exit={{ opacity: 0, y: -10 }}
             className="flex flex-col gap-3"
           >
+            <div className="flex justify-center w-full mb-1">
+              <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/[0.02] border border-white/10 backdrop-blur-sm shadow-sm">
+                <span className="text-zinc-500 text-[8px] md:text-[9px] uppercase tracking-[0.3em] font-bold">Reward</span>
+                <div className="w-px h-3 bg-white/20"></div>
+                <span className="text-zinc-300 text-[9px] md:text-[10px] uppercase tracking-[0.2em] font-medium">
+                  500 Fylex Credit
+                </span>
+              </div>
+            </div>
             <motion.form
               onSubmit={handleSubmit}
               className={`relative flex items-center w-full p-1 rounded-full transition-all duration-300 ${
@@ -107,9 +116,9 @@ export function WaitlistForm() {
               <button
                 suppressHydrationWarning
                 type="submit"
-                className="relative flex items-center justify-center p-3 ml-2 shrink-0 text-black bg-white rounded-full hover:bg-zinc-200 transition-colors"
+                className="fylex-cta px-6 py-3 ml-2 shrink-0 text-[10px] md:text-xs"
               >
-                <ArrowRight className="w-5 h-5" />
+                Join the Fylex world
               </button>
             </motion.form>
 

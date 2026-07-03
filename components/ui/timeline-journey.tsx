@@ -56,12 +56,12 @@ export const TimelineJourney = () => {
         <motion.div style={{ x }} className="flex gap-12 md:gap-16 px-12 md:px-32">
           
           <div className="flex flex-col justify-center min-w-[30vw] md:min-w-[25vw] shrink-0">
-            <span className="text-zinc-500 font-bold uppercase tracking-[0.3em] text-xs md:text-sm mb-4">The Process</span>
+            <span className="text-zinc-500 font-bold uppercase tracking-[0.3em] text-xs md:text-sm mb-4">Built on 25 Years of Watchmaking</span>
             <h2 className="text-5xl md:text-7xl font-serif text-white tracking-tighter leading-[1.1]">
-              A Journey of <br/> <span className="italic font-light text-zinc-400">Creation</span>
+              A Legacy of <br/> <span className="italic font-light text-zinc-400">Craftsmanship</span>
             </h2>
             <p className="mt-8 text-zinc-400 font-light max-w-sm leading-relaxed text-sm md:text-base">
-              Scroll horizontally to witness the metamorphosis from raw, unyielding metal to an instrument of absolute precision.
+              For over two decades, we've manufactured and assembled combinations in the Indian watch market. Fylex is our way of bringing that experience directly to you.
             </p>
           </div>
 
