@@ -43,9 +43,15 @@ jobs:
             echo "🎨 Deploying Waitlist..."
             
             echo "📦 Installing waitlist dependencies..."
-            npm install --frozen-lockfile || npm install
+            npm ci
 
             echo "🗄️  Generating Prisma Client & Running Migrations..."
+            # Verify DATABASE_URL is accessible before attempting migration
+            if [ -z "$DATABASE_URL" ] && [ ! -f ".env" ]; then
+              echo "❌ DATABASE_URL not set and .env file not found!"
+              echo "   Create /home/fylex-waitlist-final/.env with DATABASE_URL on the server."
+              exit 1
+            fi
             npx prisma generate
             npx prisma migrate deploy
 

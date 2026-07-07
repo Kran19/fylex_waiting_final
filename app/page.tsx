@@ -20,15 +20,65 @@ export default function Home() {
     requestAnimationFrame(raf)
   }, [])
 
-  const [activeVote, setActiveVote] = useState<number | null>(null);
+  // ─── Vote section state ──────────────────────────────────────────────────
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [hasVoted, setHasVoted] = useState(false);
+  const [userPick, setUserPick] = useState<number | null>(null);
+  const [voteData, setVoteData] = useState<Record<number, number> | null>(null);
+  const [isVoting, setIsVoting] = useState(false);
+  const [voteCheckDone, setVoteCheckDone] = useState(false);
+  // ─────────────────────────────────────────────────────────────────────────
 
   const voteOptions = [
-    { id: 1, title: "Black", votes: "12%", img: "https://images.pexels.com/photos/277390/pexels-photo-277390.jpeg" },
-    { id: 2, title: "Gold", votes: "24%", img: "https://images.pexels.com/photos/2113994/pexels-photo-2113994.jpeg" },
-    { id: 3, title: "Blue", votes: "56%", img: "https://images.pexels.com/photos/280250/pexels-photo-280250.jpeg" },
-    { id: 4, title: "Green", votes: "5%", img: "https://images.pexels.com/photos/380782/pexels-photo-380782.jpeg" },
-    { id: 5, title: "Silver", votes: "3%", img: "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg" },
+    { id: 1, title: "Olive Green",  persona: "The Builder",  tagline: "steady, grounded, dependable",   color: "#6B7C4A", img: "https://images.pexels.com/photos/380782/pexels-photo-380782.jpeg" },
+    { id: 2, title: "Dark Blue",    persona: "The Thinker",  tagline: "wise, reflective, trustworthy",   color: "#2C3E6B", img: "https://images.pexels.com/photos/280250/pexels-photo-280250.jpeg" },
+    { id: 3, title: "Silver",       persona: "The Explorer", tagline: "curious, adaptable, innovative",  color: "#8A9BA8", img: "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg" },
+    { id: 4, title: "Gold",         persona: "The Achiever", tagline: "ambitious, confident, inspiring",  color: "#C9A84C", img: "https://images.pexels.com/photos/2113994/pexels-photo-2113994.jpeg" },
   ];
+
+  // Silent IP check on mount — no user input needed
+  useEffect(() => {
+    fetch('/api/vote')
+      .then(r => r.json())
+      .then(data => {
+        if (data.hasVoted) {
+          setUserPick(data.watchId);
+          setVoteData(data.percentages);
+          setHasVoted(true);
+        }
+      })
+      .catch(() => {}) // silently ignore — user can still vote if check fails
+      .finally(() => setVoteCheckDone(true));
+  }, []);
+
+  const handleSelect = (id: number) => {
+    if (hasVoted || isVoting) return;
+    setSelectedId(prev => prev === id ? null : id);
+  };
+
+  const handleVote = async () => {
+    if (!selectedId || hasVoted || isVoting) return;
+    setIsVoting(true);
+    setUserPick(selectedId);
+    try {
+      const res = await fetch('/api/vote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ watchId: selectedId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        // Use the watchId the server actually stored (first-vote-wins)
+        setUserPick(data.watchId);
+        setVoteData(data.percentages);
+        setHasVoted(true);
+      }
+    } catch (e) {
+      console.error('Voting failed', e);
+    } finally {
+      setIsVoting(false);
+    }
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
@@ -116,44 +166,110 @@ export default function Home() {
           </section>
 
           {/* Vote Your Pick Section */}
-          <section className="w-full py-32 px-6 border-t border-white/5 bg-zinc-950">
+          <section className="w-full py-24 px-6 border-t border-white/5 bg-zinc-950">
             <div className="max-w-7xl mx-auto flex flex-col items-center">
-              <h2 className="text-3xl md:text-5xl font-sans font-medium text-white leading-tight mb-16 text-center lowercase">
+              <h2 className="text-3xl md:text-5xl font-sans font-medium text-white leading-tight mb-4 text-center lowercase">
                 vote your pick
               </h2>
-              
-              <div className="flex flex-col md:flex-row h-[600px] md:h-[500px] lg:h-[600px] w-full gap-2 md:gap-4">
-                {voteOptions.map((option, index) => {
-                  const isActive = activeVote === index;
+              <p className="text-white/40 text-sm md:text-base mb-16 text-center">
+                {!voteCheckDone
+                  ? '\u00a0'
+                  : !hasVoted
+                    ? (selectedId ? 'Lock in your choice below \u2193' : 'Choose the dial that speaks to you')
+                    : 'The results are in'}
+              </p>
+
+              {/* Already voted notice */}
+              {voteCheckDone && hasVoted && userPick && (
+                <p className="text-white/25 text-[10px] uppercase tracking-widest mb-6 -mt-10">
+                  You already voted from this device
+                </p>
+              )}
+
+              {/* Main accordion columns */}
+              <div
+                className={`flex flex-row w-full gap-2 md:gap-3 transition-all duration-700 ${
+                  !voteCheckDone ? 'opacity-0' : 'opacity-100'
+                }`}
+                style={{ height: hasVoted ? '420px' : '560px' }}
+              >
+                {voteOptions.map((option) => {
+                  const isSelected = selectedId === option.id;
+                  const isUserPick = userPick === option.id;
+                  const percentage = voteData ? (voteData[option.id] ?? 0) : 0;
+                  const isExpanded = !hasVoted && isSelected;
+                  const isSmall = !hasVoted && selectedId !== null && !isSelected;
+
                   return (
                     <div
                       key={option.id}
-                      onClick={() => setActiveVote(isActive ? null : index)}
-                      className={`relative overflow-hidden rounded-2xl md:rounded-3xl transition-[flex] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer group ${
-                        isActive ? "flex-[5] md:flex-[4]" : activeVote === null ? "flex-1" : "flex-[0.5] md:flex-[0.8]"
+                      onClick={() => handleSelect(option.id)}
+                      style={{
+                        flex: hasVoted ? '1' : isExpanded ? '4' : isSmall ? '0.5' : '1',
+                        transition: 'flex 0.65s cubic-bezier(0.16, 1, 0.3, 1)',
+                      }}
+                      className={`relative overflow-hidden rounded-2xl md:rounded-3xl cursor-pointer group border-2 transition-colors duration-500 ${
+                        isExpanded ? 'border-white/20' :
+                        hasVoted && isUserPick ? 'border-white/30' : 'border-transparent'
                       }`}
                     >
-                      <img 
-                        src={option.img} 
-                        alt={option.title} 
-                        className={`absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] ${isActive ? 'scale-105' : 'scale-100 group-hover:scale-105'}`} 
+                      {/* Watch image */}
+                      <img
+                        src={option.img}
+                        alt={option.title}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
-                      <div className={`absolute inset-0 transition-opacity duration-700 ${isActive ? 'bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-100' : 'bg-black/30 group-hover:bg-black/10'}`} />
-                      
-                      {/* Small white box for inactive items */}
-                      <div className={`absolute bottom-6 right-6 w-8 h-4 bg-white/70 transition-all duration-700 ${isActive ? 'opacity-0 scale-50' : 'opacity-100 scale-100'}`}></div>
 
-                      {/* Vote percentage box when active */}
-                      <div className={`absolute bottom-6 right-6 transition-all duration-700 delay-100 transform ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0 pointer-events-none'}`}>
-                        <div className="bg-white text-zinc-900 px-3 py-3 shadow-2xl flex flex-col items-center justify-center min-w-[3.5rem]">
-                          <span className="text-xl md:text-2xl font-bold leading-none">{option.votes.replace('%', '')}</span>
-                          <span className="text-sm md:text-base font-semibold leading-none mt-1">%</span>
-                        </div>
+                      {/* Gradient overlay */}
+                      <div className={`absolute inset-0 transition-all duration-500 ${
+                        isExpanded ? 'bg-gradient-to-t from-black/80 via-black/30 to-black/10' :
+                        hasVoted ? 'bg-black/60' : 'bg-black/40'
+                      }`} />
+
+                      {/* Expanded: Persona card sliding up from bottom */}
+                      <div className={`absolute bottom-0 left-0 right-0 p-5 md:p-7 transition-all duration-500 transform ${
+                        isExpanded ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0 pointer-events-none'
+                      }`}>
+                        <div className="mb-3 h-px w-8" style={{ backgroundColor: option.color }} />
+                        <p className="text-white/50 text-xs uppercase tracking-[0.2em] mb-1">{option.title}</p>
+                        <h3 className="text-white text-xl md:text-2xl font-semibold leading-tight mb-2">{option.persona}</h3>
+                        <p className="text-white/60 text-xs md:text-sm italic">{option.tagline}</p>
+                      </div>
+
+                      {/* Post-vote: percentage + persona */}
+                      <div className={`absolute inset-0 flex flex-col items-center justify-center gap-2 transition-all duration-700 px-2 ${
+                        hasVoted ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                      }`}>
+                        <span className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg tabular-nums">{percentage}%</span>
+                        <span className="text-[9px] md:text-[10px] text-white/50 uppercase tracking-widest text-center leading-tight">{option.persona}</span>
+                        {isUserPick && (
+                          <span className="mt-1 px-2 py-0.5 text-[8px] md:text-[10px] font-semibold uppercase tracking-widest rounded-full bg-white/20 text-white border border-white/30 backdrop-blur-sm whitespace-nowrap">
+                            Your Pick
+                          </span>
+                        )}
                       </div>
                     </div>
-                  )
+                  );
                 })}
               </div>
+
+              {/* Confirm Vote CTA */}
+              <div
+                className={`w-full flex justify-center transition-all duration-500 overflow-hidden ${
+                  selectedId && !hasVoted ? 'mt-8 max-h-24 opacity-100' : 'mt-0 max-h-0 opacity-0 pointer-events-none'
+                }`}
+              >
+                <button
+                  onClick={handleVote}
+                  disabled={isVoting}
+                  className="group relative px-10 py-4 bg-white text-zinc-900 text-sm uppercase tracking-widest font-semibold rounded-full overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <span className="relative z-10">{isVoting ? 'Casting Vote...' : 'Lock in my pick'}</span>
+                  <span className="absolute inset-0 bg-zinc-900 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full" />
+                  <span className="absolute inset-0 z-[5] text-white flex items-center justify-center text-sm uppercase tracking-widest font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">{isVoting ? 'Casting Vote...' : 'Lock in my pick'}</span>
+                </button>
+              </div>
+
             </div>
           </section>
 
