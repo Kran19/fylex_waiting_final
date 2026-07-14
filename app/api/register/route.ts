@@ -27,6 +27,17 @@ export async function POST(request: Request) {
       );
     }
 
+    const existingUser = await prisma.waitlist.findUnique({
+      where: { phone: stripped }
+    });
+
+    if (existingUser) {
+      return NextResponse.json(
+        { error: 'Already registered' },
+        { status: 409 }
+      );
+    }
+
     try {
       await prisma.waitlist.create({
         data: { phone: stripped },
