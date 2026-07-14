@@ -28,10 +28,10 @@ export const WatchCard: React.FC<WatchCardProps> = ({
       whileHover={{ y: -6, scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      className={`relative flex-shrink-0 overflow-hidden rounded-lg md:rounded-xl cursor-pointer select-none group transition-all duration-500 ${
+      className={`relative flex-shrink-0 overflow-hidden cursor-pointer select-none group transition-all duration-500 ${
         isActive
-          ? "w-[44px] sm:w-[88px] md:w-[98px] lg:w-[106px] xl:w-[114px] h-[380px] sm:h-[440px] md:h-[520px] border-2 border-white/90 shadow-[0_0_35px_rgba(255,255,255,0.3)] z-20"
-          : "w-[30px] sm:w-[78px] md:w-[86px] lg:w-[94px] xl:w-[100px] h-[380px] sm:h-[440px] md:h-[520px] border border-white/10 hover:border-white/30 z-10 opacity-80 hover:opacity-100"
+          ? "w-[65px] md:w-[98px] lg:w-[106px] xl:w-[114px] h-[260px] md:h-[520px] rounded-[18px] md:rounded-xl border-2 border-white/90 shadow-[0_0_35px_rgba(255,255,255,0.3)] z-20 scale-[1.04] md:scale-100 snap-center brightness-110 md:brightness-100"
+          : "w-[50px] md:w-[86px] lg:w-[94px] xl:w-[100px] h-[260px] md:h-[520px] rounded-[18px] md:rounded-xl border border-white/10 hover:border-white/30 z-10 opacity-45 md:opacity-80 hover:opacity-100 snap-center"
       }`}
     >
       {/* Cropped watch dial strip preview */}
@@ -81,7 +81,7 @@ export const WatchCard: React.FC<WatchCardProps> = ({
       {isActive && (
         <motion.div
           layoutId="activeWatchRing"
-          className="absolute inset-0 rounded-lg md:rounded-xl border border-white/40 pointer-events-none shadow-[inset_0_0_15px_rgba(255,255,255,0.2)]"
+          className="absolute inset-0 rounded-[18px] md:rounded-xl border border-white/40 pointer-events-none shadow-[inset_0_0_15px_rgba(255,255,255,0.2)]"
         />
       )}
     </motion.div>

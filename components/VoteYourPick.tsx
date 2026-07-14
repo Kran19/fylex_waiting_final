@@ -177,15 +177,15 @@ export const VoteYourPick: React.FC = () => {
   const currentPercentage = percentages[selectedId] ?? selectedWatch.percentage;
 
   return (
-    <section className="relative w-full py-20 sm:py-28 px-4 sm:px-6 md:px-8 bg-black border-t border-white/5 overflow-hidden select-none">
+    <section className="relative w-full py-[40px] md:py-20 lg:py-28 px-[20px] md:px-8 bg-black border-t border-white/5 overflow-hidden select-none">
       {/* Subtle luxury ambient backlight */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-white/[0.02] rounded-full blur-[140px] pointer-events-none" />
 
       <div className="relative z-10 max-w-[84rem] mx-auto flex flex-col items-center">
         
         {/* Minimalist Header */}
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-sans font-medium text-white tracking-tight leading-tight mb-3 lowercase">
+        <div className="text-center mb-[40px] md:mb-12 lg:mb-16">
+          <h2 className="text-[26px] md:text-5xl lg:text-6xl font-sans font-medium text-white tracking-[0.5px] md:tracking-tight leading-tight mb-3 lowercase text-center">
             vote your pick
           </h2>
           <p className="text-zinc-500 text-sm sm:text-base font-light tracking-wide">
@@ -208,11 +208,11 @@ export const VoteYourPick: React.FC = () => {
           )}
         </div>
 
-        {/* Exact Side-by-Side Layout from Screenshot */}
-        <div className="w-full flex flex-row items-center justify-between gap-2 sm:gap-6 lg:gap-10 xl:gap-14">
+        {/* Exact Side-by-Side Layout from Screenshot on Desktop, Stacked on Mobile */}
+        <div className="w-full flex flex-col md:flex-row items-center justify-center md:justify-between gap-[18px] md:gap-10 xl:gap-14">
           
-          {/* Left Side: Vertical Watch Strips with bottom silver boxes */}
-          <div className="w-[50%] sm:w-[55%] flex flex-row items-center justify-start gap-1 sm:gap-3 md:gap-3.5 overflow-visible">
+          {/* Left Side: Watch Strips */}
+          <div className="w-full md:w-[50%] lg:w-[55%] flex flex-row items-center justify-center md:justify-start gap-[10px] md:gap-3.5 overflow-x-auto snap-x snap-mandatory py-2 md:py-0 scrollbar-hide">
             {watches.map((watch, index) => (
               <WatchCard
                 key={watch.id}
@@ -227,7 +227,7 @@ export const VoteYourPick: React.FC = () => {
           </div>
 
           {/* Right Side: FULL WATCH DISPLAY + Vertical Percentage Box */}
-          <div className="w-[50%] sm:w-[45%] h-full flex items-center justify-center relative">
+          <div className="w-full md:w-[50%] lg:w-[45%] h-full flex items-center justify-center relative mt-4 md:mt-0">
             <WatchPreview
               watch={selectedWatch}
               percentage={currentPercentage}
@@ -237,7 +237,7 @@ export const VoteYourPick: React.FC = () => {
         </div>
 
         {/* Minimalist CTA Button Below */}
-        <div className="mt-12 sm:mt-16 w-full flex justify-center">
+        <div className="mt-[40px] md:mt-16 w-full flex justify-center">
           <button
             onClick={handleVote}
             disabled={isVoting || hasVoted}
