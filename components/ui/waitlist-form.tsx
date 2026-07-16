@@ -55,7 +55,7 @@ export function WaitlistForm() {
       }
 
       setPhone("");
-      setSuccess("Success! Your spot is secured. We will notify you the moment our doors open.");
+      setSuccess("Success! Your spot is secured. You can redeem your 500 Fylex Credits when we go live!");
     } catch (err) {
       console.error(err);
       setError("Failed to register. Please try again.");
@@ -109,12 +109,12 @@ export function WaitlistForm() {
                 placeholder="Enter your mobile number..."
                 autoComplete="tel"
                 maxLength={15}
-                className="flex-1 min-w-0 bg-transparent px-3 md:px-4 py-3 text-xs md:text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-0"
+                className="flex-1 min-w-[80px] bg-transparent px-2 md:px-4 py-3 text-xs md:text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-0"
               />
               <button
                 suppressHydrationWarning
                 type="submit"
-                className="fylex-cta px-6 py-3 ml-2 shrink-0 text-[10px] md:text-xs"
+                className="fylex-cta px-3 md:px-6 py-2.5 md:py-3 ml-1 md:ml-2 shrink-0 text-[9px] md:text-xs"
               >
                 Join the Fylex world
               </button>
