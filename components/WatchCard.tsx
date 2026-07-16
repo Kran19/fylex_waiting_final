@@ -65,15 +65,9 @@ export const WatchCard: React.FC<WatchCardProps> = ({
               : "border-white/60 group-hover:bg-white group-hover:scale-105"
           }`}
         >
-          {hasVoted && percentage !== undefined ? (
-            <span className="text-[6px] sm:text-xs font-mono font-bold text-zinc-900 tracking-tight">
-              {percentage}%
-            </span>
-          ) : (
-            <span className="text-[6px] sm:text-xs font-mono font-bold text-zinc-700 tracking-tight">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-          )}
+          <span className="text-[6px] sm:text-xs font-mono font-bold text-zinc-700 tracking-tight">
+            {String(index + 1).padStart(2, "0")}
+          </span>
         </div>
       </div>
 

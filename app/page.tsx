@@ -52,7 +52,7 @@ export default function Home() {
         {/* Fixed Parallax Video Background for Hero */}
         <div className="fixed inset-0 z-0 w-full h-screen pointer-events-none">
           <video
-            src="/assets/Fylexxx.mp4"
+            src="/assets/hero/FLX1_compressed.mp4"
             autoPlay
             muted
             loop
@@ -90,13 +90,13 @@ export default function Home() {
               <div className="relative group">
                 <ImageComparison className="aspect-[3/4] max-w-xl mx-auto w-full rounded-3xl shadow-[0_0_50px_rgba(255,255,255,0.05)] border border-white/10 bg-black" enableHover>
                   <ImageComparisonImage
-                    src="/assets/swipe/2.webp"
+                    src="/assets/thethingswechoose/7.webp"
                     className="opacity-95 object-contain sm:object-cover object-center"
                     alt="First Image"
                     position="left"
                   />
                   <ImageComparisonImage
-                    src="/assets/swipe/1.webp"
+                    src="/assets/thethingswechoose/6.webp"
                     className="object-contain sm:object-cover object-center"
                     alt="Second Image"
                     position="right"
